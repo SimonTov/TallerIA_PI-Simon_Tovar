@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <form action="">
+        <div class="mb-3">
+            <label for="searchMovie" class="form-label">Search for Movie:</label>
+            <input type="text" class="form-control" name="searchMovie"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <p>Searching for: {{ searchTerm }}</p>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for movie in movies %}
+        <div class="col">
+            <div class="card">
+                {% if movie.image_url %}
+                    <img src="{{ movie.image_url }}" class="card-img-top" alt="{{ movie.title }}">
+                {% else %}
+                    <!-- fallback: imagen por defecto dentro de media (asegúrate que default.JPG exista en media/movie/images/) -->
+                    <img src="/media/movie/images/default.JPG" class="card-img-top" alt="No image available">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ movie.title }}</h5>
+                    <p class="card-text">{{ movie.description }}</p>
+                    <p class="card-text">{{ movie.genre }}</p>
+                    <p class="card-text">
+                        {% if movie.release_date %}
+                            {{ movie.release_date|date:"F j, Y" }}
+                        {% endif %}
+                    </p>
+                    {% if movie.url %}
+                        <a href="{{ movie.url }}" class="btn btn-primary">Movie Link</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <br/><br/><br/>
+    <h2>Join our mailing list:</h2>
+    <form action="{% url 'signup' %}">
+        <div class="mb-3">
+            <label for="email" class="form-label">Enter your email:</label>
+            <input type="email" class="form-control" name="email" />
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+</div>
+
+{% endblock content %}
